@@ -12,7 +12,7 @@
 
 constexpr int EXPECTED_ARG_COUNT = 3;
 
-CXChildVisitResult visitor(CXCursor cursor, CXCursor parent,
+CXChildVisitResult visitor(CXCursor cursor, [[maybe_unused]] CXCursor parent,
                            CXClientData client_data) {
   auto *targetSig = static_cast<Signature *>(client_data);
   Signature actual;
@@ -23,6 +23,7 @@ CXChildVisitResult visitor(CXCursor cursor, CXCursor parent,
     CXString retSpelling = clang_getTypeSpelling(retType);
 
     actual.retType = clang_getCString(retSpelling);
+    printf("XXX %s\n", clang_getCString(retSpelling));
     clang_disposeString(retSpelling);
 
     int numArgs = clang_Cursor_getNumArguments(cursor);
